@@ -1,0 +1,1 @@
+/usr/local/bin/g++-8   -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/fuck.dir/src/fuck.cpp.o CMakeFiles/fuck.dir/main.cpp.o  -o fuck 
