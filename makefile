@@ -1,6 +1,7 @@
 vpath %.cpp src #文件搜索的位置vpath <patern> <diretory>
 
-include=-I include 
+include=-I include
+lib=-L lib 
 cflag= -std=c++11 -g
 cc=g++
 
@@ -11,17 +12,21 @@ cc=g++
 
 #filter的用法$(filter <patern> <patern>...,<string>)
 
-myapp:main.o fuck.o
+myapp:libfuck.a main.o
 	@echo "compiling fuck"
-	@$(cc) -o $@ $^ $(include) $(cflag)
+	@$(cc) -o $@ $(filter %.o,$^) $(include) $(cflag) $(lib) -lfuck
 	-@rm *.o
 	-@mkdir exec
 	@mv $@ exec
-	@echo $(filter m%,$^) 
 	@echo "compiled complete!"
 fuck.o:fuck.cpp
 	@echo "compiling fuck.o"
 	@$(cc) -c $^ -o $@ $(include) $(cflag)
+libfuck.a:fuck.o
+	@echo "making the fuck lib"
+	-@mkdir lib
+	@ar -rc $@ $^
+	@mv $@ lib
 main.o:main.cpp
 	@echo "compiling main.o"
 	@$(cc) -c $< -o $@ $(include) $(cflag)
@@ -30,4 +35,5 @@ main.o:main.cpp
 clean:
 	-@rm *.o || true
 	-@rm -rf exec || true
+	-@rm -rf lib || true
 	@echo "clean OK!"
