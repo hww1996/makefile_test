@@ -9,16 +9,19 @@ cc=g++
 #$^：所有依赖
 #$<：第一个依赖
 
+#filter的用法$(filter <patern> <patern>...,<string>)
+
 myapp:main.o fuck.o
 	@echo "compiling fuck"
 	@$(cc) -o $@ $^ $(include) $(cflag)
 	-@rm *.o
 	-@mkdir exec
 	@mv $@ exec
+	@echo $(filter m%,$^) 
 	@echo "compiled complete!"
 fuck.o:fuck.cpp
 	@echo "compiling fuck.o"
-	$(cc) -c $^ -o $@ $(include) $(cflag)
+	@$(cc) -c $^ -o $@ $(include) $(cflag)
 main.o:main.cpp
 	@echo "compiling main.o"
 	@$(cc) -c $< -o $@ $(include) $(cflag)
